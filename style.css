@@ -1,0 +1,326 @@
+/* -------------------------- */
+/* 🎨 VARIÁVEIS E ESTILO BASE */
+/* -------------------------- */
+:root {
+    --bg-color: #0a0a0a;
+    --surface-color: #1a1a1a;
+    --primary-accent: #e91e63; /* Rosa vibrante */
+    --secondary-accent: #c2a3ff; /* Lavanda suave */
+    --text-primary: #f5f5f5;
+    --text-secondary: #a0a0a0;
+    --title-font: 'Playfair Display', serif;
+    --body-font: 'Poppins', sans-serif;
+    --transition-speed: 0.6s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--body-font);
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    overflow: hidden;
+}
+
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+}
+
+/* -------------------- */
+/* 🛠️ LAYOUT E ECRÃS    */
+/* -------------------- */
+.container {
+    position: relative;
+    z-index: 2; /* Elevado para ficar sobre os corações */
+    width: 100%;
+    max-width: 1000px;
+    padding: 20px;
+}
+
+.screen {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    animation: fadeOut var(--transition-speed) ease-in-out forwards;
+}
+
+.screen.active {
+    display: flex;
+    animation: fadeIn var(--transition-speed) ease-in-out forwards;
+}
+
+.title-font {
+    font-family: var(--title-font);
+    color: var(--text-primary);
+    text-shadow: 0 0 15px var(--secondary-accent);
+}
+
+/* --------------------------- */
+/* ⏳ ECRÃ DE CARREGAMENTO     */
+/* --------------------------- */
+#loadingScreen p {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid var(--surface-color);
+    border-top-color: var(--secondary-accent);
+    border-radius: 50%;
+    animation: spin 1.2s cubic-bezier(0.6, 0.1, 0.4, 0.9) infinite;
+}
+
+/* ----------------- */
+/* 🎬 ECRÃ INICIAL   */
+/* ----------------- */
+#startScreen h1 {
+    font-size: clamp(3rem, 10vw, 5.5rem);
+    margin-bottom: 0.5rem;
+}
+
+#startScreen p {
+    font-size: clamp(1rem, 4vw, 1.2rem);
+    margin-bottom: 3rem;
+    color: var(--text-secondary);
+    font-weight: 300;
+}
+
+#startButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 32px;
+    font-size: 1.1rem;
+    font-weight: 400;
+    border: 1px solid var(--primary-accent);
+    border-radius: 50px;
+    background-color: transparent;
+    color: var(--primary-accent);
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(233, 30, 99, 0.3);
+    transition: background-color 0.4s ease, color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+#startButton:hover {
+    background-color: var(--primary-accent);
+    color: var(--text-primary);
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 0 30px rgba(233, 30, 99, 0.5);
+}
+
+/* -------------------- */
+/* 📸 ECRÃ DE MEMÓRIAS  */
+/* -------------------- */
+#counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: clamp(0.9rem, 3vw, 1.1rem);
+    margin-bottom: 20px;
+    background: rgba(26, 26, 26, 0.8);
+    backdrop-filter: blur(5px);
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.counter-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--primary-accent);
+}
+
+#slideshow {
+    width: 100%;
+}
+
+.media-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: #000;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.media-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0px 0px 80px 20px rgba(0,0,0,0.9);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.media-container img,
+.media-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Garante que as fotos não são cortadas */
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+}
+
+.media-container img.active {
+    opacity: 1;
+    animation: kenburns-subtle 20s infinite alternate ease-in-out;
+}
+
+.media-container video.active {
+    opacity: 1;
+}
+
+#caption {
+    margin-top: 25px;
+    font-size: clamp(1rem, 3.5vw, 1.2rem);
+    font-style: italic;
+    font-weight: 300;
+    min-height: 40px;
+    color: var(--text-secondary);
+}
+
+#caption span {
+    opacity: 0;
+    display: inline-block;
+    animation: revealLetter 0.5s forwards;
+}
+
+.progress-bar-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.2);
+    z-index: 3;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background-color: var(--primary-accent);
+    border-radius: 0 2px 2px 0;
+    box-shadow: 0 0 10px var(--primary-accent);
+}
+
+.progress-bar.animate {
+    transition: width 0s linear; 
+    width: 100%;
+}
+
+/* --------------- */
+/* 💖 ECRÃ FINAL  */
+/* --------------- */
+#finalMessageScreen {
+    padding: clamp(30px, 8vw, 60px);
+    border-radius: 20px;
+}
+
+#finalMessageScreen h2 {
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    margin-bottom: 1.5rem;
+}
+
+#finalMessageScreen p {
+    font-size: clamp(1.1rem, 4vw, 1.4rem);
+    line-height: 1.8;
+    margin-top: 1rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+}
+
+/* -------------------------- */
+/* ❤️ ANIMAÇÃO DOS CORAÇÕES   */
+/* -------------------------- */
+#heart-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.heart {
+    position: absolute;
+    bottom: -50px;
+    font-size: 20px;
+    color: var(--primary-accent);
+    animation: rise linear forwards;
+    text-shadow: 0 0 10px var(--primary-accent);
+    opacity: 0.7;
+}
+
+/* ----------------- */
+/* 🎞️ ANIMAÇÕES     */
+/* ----------------- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-20px); }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes kenburns-subtle {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.05); }
+}
+
+@keyframes revealLetter {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes rise {
+    to {
+        transform: translateY(-105vh);
+        opacity: 0;
+    }
+}
+
+/* ----------------- */
+/* 📱 RESPONSIVIDADE */
+/* ----------------- */
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+}
+

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>7 ANOS ❤️</title>
+    
+    <!-- Google Fonts para um estilo mais elegante -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <!-- Canvas para o fundo de partículas animado -->
+    <canvas id="particle-canvas"></canvas>
+    
+    <!-- MODIFICAÇÃO: Contêiner para o efeito de corações a subir -->
+    <div id="heart-container"></div>
+
+    <div class="container">
+        <!-- Ecrã de Carregamento -->
+        <div id="loadingScreen" class="screen active">
+            <div class="spinner"></div>
+            <p>A preparar as nossas memórias...</p>
+        </div>
+
+        <!-- Ecrã Inicial -->
+        <div id="startScreen" class="screen">
+            <h1 class="title-font">Um Presente Especial</h1>
+            <p>Para a pessoa que tornou os meus dias mais felizes.</p>
+            <button id="startButton">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                <span>Começar</span>
+            </button>
+        </div>
+
+        <!-- Ecrã de Memórias (Slideshow) -->
+        <div id="memoriesScreen" class="screen">
+            <div id="counter">
+                <svg class="counter-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                <span id="counter-text"></span>
+            </div>
+            <div id="slideshow">
+                <div class="media-container">
+                    <img id="photo" src="" alt="Foto da nossa história" />
+                    <video id="video" muted playsinline>
+                        <source id="videoSource" src="" type="video/mp4" />
+                        O seu navegador não suporta vídeos.
+                    </video>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar"></div>
+                    </div>
+                </div>
+                <p id="caption"></p>
+            </div>
+        </div>
+
+         <!-- Ecrã Final -->
+        <div id="finalMessageScreen" class="screen">
+            <h2 class="title-font">Obrigado por Tudo</h2>
+            <p>Você foi a melhor coisa que me aconteceu.</p>
+            <p>Obrigado por comparyilhar 7 anos da sua vida comigo.</p>
+            <p>Eu te amo, hoije e sempre!</p>
+        </div>
+    </div>
+
+    <audio id="music" src="musica.mp3" loop></audio>
+    <script src="script.js"></script>
+</body>
+</html>
+
